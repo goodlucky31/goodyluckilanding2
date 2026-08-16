@@ -11,7 +11,13 @@
     // ════════════════════════════════════════
     const PIXEL_ID     = '2141536543066953';
     const ACCESS_TOKEN = 'EAAcLCVnJCDoBSPAZBVjvVGxtaltZCF8W4cnwWhtmDApHEecR0J7KhmG0x5xT8mLqFPqTZCfQF5I1pRSQ8keLsJOExuh1srOGQm9tw3v9tTkRcEacih96DcbsTDEypZCQ5dgZAjfPoAlXFE2Xt6QQp9V9NVN5yKMsKh3KelSE27X4zdxdyHnncMeu1ntiPpylElAZDZD';
-    const WHATSAPP_NUM = '5492236715886';
+    
+    // ROTADOR DE NÚMEROS: Agrega aquí tus números de WhatsApp conectados a Whaticket
+    const WHATSAPP_NUMEROS = [
+      '5492235343559', // Número 1
+      '5492236715886'  // Número 2 (Reemplazar con tu segundo número real)
+    ];
+
     const EVENT_URL    = 'https://goodlucky31.github.io/landing/';
   </script>
 
@@ -385,6 +391,15 @@
   <script>
     let yaRedirigido = false;
 
+    // Función para obtener un número al azar del listado
+    function obtenerNumeroRotado() {
+      if (typeof WHATSAPP_NUMEROS !== 'undefined' && WHATSAPP_NUMEROS.length > 0) {
+        const indiceAleatorio = Math.floor(Math.random() * WHATSAPP_NUMEROS.length);
+        return WHATSAPP_NUMEROS[indiceAleatorio];
+      }
+      return '5492236715886'; // Fallback de seguridad
+    }
+
     function generarREF() {
       let ref = sessionStorage.getItem('casino_ref');
       if (!ref) {
@@ -457,11 +472,14 @@
 
       enviarEventoLead(ref);
 
+      // Selección aleatoria del número activo
+      const numeroSeleccionado = obtenerNumeroRotado();
+
       const mensaje = encodeURIComponent(
         `Hola! Quiero mas informacion \nREF: ${ref}`
       );
 
-      window.location.href = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${mensaje}`;
+      window.location.href = `https://api.whatsapp.com/send?phone=${numeroSeleccionado}&text=${mensaje}`;
     }
 
     // CONTADOR REGRESIVO (10 minutos)
