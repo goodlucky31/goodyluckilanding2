@@ -17,7 +17,7 @@
     window.WTT_API = { 
       config: {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
-        "position": "left",
+        "position": "right",
         "toggleButtonEnabled": true,
         "chatColor": "#3956FF",
         "isAudioEnabled": false,
@@ -53,7 +53,7 @@
       background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
       min-height: 100vh;
       color: white;
-      padding-bottom: 90px;
+      padding-bottom: 110px;
     }
 
     .header {
@@ -136,11 +136,14 @@
     }
     .btn-sub { text-align: center; font-size: 12px; color: #6e85ff; margin-top: 8px; font-weight: bold; }
 
+    /* BARRA FLOTANTE CON INDICADOR CLARO */
     .floating-bar {
       position: fixed; bottom: 0; left: 0; width: 100%;
-      background: rgba(15, 15, 26, 0.95);
-      border-top: 1px solid rgba(255,215,0,0.2);
-      padding: 10px 20px; display: flex; justify-content: center; z-index: 998;
+      background: rgba(15, 15, 26, 0.98);
+      border-top: 2px solid #FFD700;
+      padding: 12px 20px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 998;
     }
     .floating-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -193,7 +196,7 @@
     <div class="bono-monto">100%</div>
     <div class="bono-monto-sub">en tu primer depósito</div>
     <div class="bono-desc">Depositás $3.000 → jugás con $6.000</div>
-    <div class="bono-cta-hint">👆 Tocá aquí para abrir el chat en vivo</div>
+    <div class="bono-cta-hint">👆 Tocá aquí para hablar con un asesor</div>
   </div>
 
   <div class="beneficios">
@@ -258,18 +261,29 @@
       } catch (e) {}
     }
 
-    // ABRIR CHAT BUSCANDO EL BOTÓN OFICIAL DEL WIDGET EN EL DOM
-    function abrirChatWeb() {
+    // MANEJADOR UNIFICADO DE ACCIONES
+    function accionChat() {
       const ref = generarREF();
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLead(ref);
 
-      // Busca el botón que crea el script de Whaticket y le fuerza el clic
-      const widgetButton = document.querySelector('button[class*="wtt"], div[class*="wtt"], iframe');
-      if (widgetButton) {
-        widgetButton.click();
-      } else if (window.WTT_API && typeof window.WTT_API.open === 'function') {
-        window.WTT_API.open();
+      // Busca el botón nativo generado por Whaticket en la pantalla
+      let abierto = false;
+      
+      // Intentar clic directo en elementos de Whaticket
+      const elementos = document.querySelectorAll('iframe, [class*="wtt"], [id*="wtt"], button');
+      elementos.forEach(el => {
+        if (!abierto && el.id !== 'btnBono' && el.id !== 'btnChatMain' && el.id !== 'btnFloat') {
+          try {
+            el.click();
+            abierto = true;
+          } catch(e){}
+        }
+      });
+
+      // Si el navegador bloquea la simulación, desplaza al usuario abajo donde está el chat
+      if (!abierto) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
     }
 
@@ -296,15 +310,14 @@
       }, 11000);
     }
 
-    // ASIGNAR EVENTOS UNA VEZ CARGADO EL DOM
     document.addEventListener('DOMContentLoaded', () => {
       generarREF();
       iniciarContador();
       setTimeout(iniciarToastSocial, 2500);
 
-      document.getElementById('btnBono').addEventListener('click', abrirChatWeb);
-      document.getElementById('btnChatMain').addEventListener('click', abrirChatWeb);
-      document.getElementById('btnFloat').addEventListener('click', abrirChatWeb);
+      document.getElementById('btnBono').addEventListener('click', accionChat);
+      document.getElementById('btnChatMain').addEventListener('click', accionChat);
+      document.getElementById('btnFloat').addEventListener('click', accionChat);
     });
   </script>
 </body>
