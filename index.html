@@ -7,25 +7,11 @@
 
   <script>
     // ════════════════════════════════════════
-    // CONFIGURACIÓN DE META PIXEL & WHATICKET
+    // CONFIGURACIÓN DE META PIXEL
     // ════════════════════════════════════════
     const PIXEL_ID     = '2141536543066953';
     const ACCESS_TOKEN = 'EAAcLCVnJCDoBSPAZBVjvVGxtaltZCF8W4cnwWhtmDApHEecR0J7KhmG0x5xT8mLqFPqTZCfQF5I1pRSQ8keLsJOExuh1srOGQm9tw3v9tTkRcEacih96DcbsTDEypZCQ5dgZAjfPoAlXFE2Xt6QQp9V9NVN5yKMsKh3KelSE27X4zdxdyHnncMeu1ntiPpylElAZDZD';
     const EVENT_URL    = 'https://goodlucky31.github.io/landing/';
-
-    // CHAT WEB DE WHATICKET
-    window.WTT_API = { 
-      config: {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
-        "position": "right",
-        "toggleButtonEnabled": true,
-        "chatColor": "#3956FF",
-        "isAudioEnabled": false,
-        "requestName": false,
-        "requestEmail": false,
-        "requestNumber": false
-      } 
-    };
   </script>
 
   <!-- META PIXEL -->
@@ -42,8 +28,18 @@
     fbq('track', 'PageView');
   </script>
 
-  <!-- SCRIPT WHATICKET WIDGET -->
-  <script async crossorigin="*" src="https://public.whaticket.com/widget/production/wtt-widget-default.js"></script>
+  <!-- SCRIPT CRISP CHAT CON TU ID -->
+  <script type="text/javascript">
+    window.$crisp = [];
+    window.CRISP_WEBSITE_ID = "a4e6331e-99ef-4878-ba7e-f2dab998ae88";
+    (function(){
+      d = document;
+      s = d.createElement("script");
+      s.src = "https://client.crisp.chat/l.js";
+      s.async = 1;
+      d.getElementsByTagName("head")[0].appendChild(s);
+    })();
+  </script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -136,13 +132,12 @@
     }
     .btn-sub { text-align: center; font-size: 12px; color: #6e85ff; margin-top: 8px; font-weight: bold; }
 
-    /* BARRA FLOTANTE CON INDICADOR CLARO */
     .floating-bar {
       position: fixed; bottom: 0; left: 0; width: 100%;
       background: rgba(15, 15, 26, 0.98);
       border-top: 2px solid #FFD700;
       padding: 12px 20px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      display: flex; justify-content: center;
       z-index: 998;
     }
     .floating-btn {
@@ -261,29 +256,15 @@
       } catch (e) {}
     }
 
-    // MANEJADOR UNIFICADO DE ACCIONES
-    function accionChat() {
+    // ACCIÓN AL TOCAR CUALQUIERA DE LOS BOTONES
+    function abrirChat() {
       const ref = generarREF();
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLead(ref);
 
-      // Busca el botón nativo generado por Whaticket en la pantalla
-      let abierto = false;
-      
-      // Intentar clic directo en elementos de Whaticket
-      const elementos = document.querySelectorAll('iframe, [class*="wtt"], [id*="wtt"], button');
-      elementos.forEach(el => {
-        if (!abierto && el.id !== 'btnBono' && el.id !== 'btnChatMain' && el.id !== 'btnFloat') {
-          try {
-            el.click();
-            abierto = true;
-          } catch(e){}
-        }
-      });
-
-      // Si el navegador bloquea la simulación, desplaza al usuario abajo donde está el chat
-      if (!abierto) {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      // Abre la ventana flotante de Crisp
+      if (typeof $crisp !== 'undefined') {
+        $crisp.push(['do', 'chat:open']);
       }
     }
 
@@ -315,9 +296,9 @@
       iniciarContador();
       setTimeout(iniciarToastSocial, 2500);
 
-      document.getElementById('btnBono').addEventListener('click', accionChat);
-      document.getElementById('btnChatMain').addEventListener('click', accionChat);
-      document.getElementById('btnFloat').addEventListener('click', accionChat);
+      document.getElementById('btnBono').addEventListener('click', abrirChat);
+      document.getElementById('btnChatMain').addEventListener('click', abrirChat);
+      document.getElementById('btnFloat').addEventListener('click', abrirChat);
     });
   </script>
 </body>
