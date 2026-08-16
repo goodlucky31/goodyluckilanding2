@@ -3,22 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎰 Conseguí tu Bono de Bienvenida</title>
+  <title>🎰 Conseguí tu Bono de Bienvenida VIP</title>
 
   <script>
     // ════════════════════════════════════════
-    // CONFIGURACIÓN — EDITÁ SOLO AQUÍ
+    // CONFIGURACIÓN CENTRALIZADA
     // ════════════════════════════════════════
     const PIXEL_ID     = '2141536543066953';
     const ACCESS_TOKEN = 'EAAcLCVnJCDoBSPAZBVjvVGxtaltZCF8W4cnwWhtmDApHEecR0J7KhmG0x5xT8mLqFPqTZCfQF5I1pRSQ8keLsJOExuh1srOGQm9tw3v9tTkRcEacih96DcbsTDEypZCQ5dgZAjfPoAlXFE2Xt6QQp9V9NVN5yKMsKh3KelSE27X4zdxdyHnncMeu1ntiPpylElAZDZD';
     
-    // ROTADOR DE NÚMEROS: Agrega aquí tus números de WhatsApp conectados a Whaticket
+    // Rotador de WhatsApps vinculados a tu Whaticket
     const WHATSAPP_NUMEROS = [
-      '5492235343559', // Número 1
-      '5492236715886'  // Número 2 (Reemplazar con tu segundo número real)
+      '5492235343559',
+      '5492236715886'
     ];
 
-    const EVENT_URL    = 'https://goodlucky31.github.io/landing/';
+    const EVENT_URL = 'https://goodlucky31.github.io/landing/';
+
+    // CONFIGURACIÓN DE WHATICKET WIDGET PRO
+    window.WTT_API = { 
+      config: {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
+        "position": "right",
+        "toggleButtonEnabled": true,
+        "chatColor": "#25D366",
+        "isAudioEnabled": true,
+        "requestName": true,
+        "requestEmail": false,
+        "requestNumber": true
+      } 
+    };
   </script>
 
   <!-- META PIXEL -->
@@ -34,16 +48,13 @@
     fbq('init', PIXEL_ID);
     fbq('track', 'PageView');
   </script>
-  <noscript>
-    <img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=2141536543066953&ev=PageView&noscript=1"/>
-  </noscript>
+  <script async crossorigin="*" src="https://public.whaticket.com/widget/production/wtt-widget-default.js"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
       background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
       min-height: 100vh;
       color: white;
@@ -59,7 +70,7 @@
     .header-logo { font-size: 22px; font-weight: bold; color: #FFD700; letter-spacing: 2px; }
     .header-sub  { font-size: 11px; color: #aaa; margin-top: 2px; }
 
-    .hero { text-align: center; padding: 30px 20px 20px; }
+    .hero { text-align: center; padding: 25px 20px 15px; }
     .badge {
       display: inline-block;
       background: rgba(255,215,0,0.15);
@@ -67,16 +78,12 @@
       color: #FFD700;
       font-size: 12px; font-weight: bold;
       padding: 5px 16px; border-radius: 20px;
-      margin-bottom: 14px; letter-spacing: 1px;
+      margin-bottom: 12px; letter-spacing: 1px;
     }
-    .hero h1 {
-      font-size: 32px; font-weight: 900;
-      line-height: 1.2; margin-bottom: 10px;
-    }
+    .hero h1 { font-size: 30px; font-weight: 900; line-height: 1.2; margin-bottom: 8px; }
     .hero h1 span { color: #FFD700; text-shadow: 0 0 20px rgba(255,215,0,0.5); }
-    .hero-sub { font-size: 16px; color: #ccc; margin-bottom: 15px; }
+    .hero-sub { font-size: 15px; color: #ccc; margin-bottom: 15px; }
 
-    /* CONTADOR REGRESIVO */
     .timer-container {
       background: rgba(255, 165, 0, 0.1);
       border: 1px dashed #FFA500;
@@ -104,20 +111,13 @@
       box-shadow: 0 8px 32px rgba(255,215,0,0.3);
       cursor: pointer;
       transition: transform 0.15s, box-shadow 0.15s;
-      user-select: none;
       animation: pulso 2s infinite ease-in-out;
     }
-    .bono-box:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 14px 40px rgba(255,215,0,0.5);
-    }
-    .bono-box:active { transform: translateY(0) scale(0.98); }
-
-    .bono-titulo     { color: #1a1a2e; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-    .bono-monto      { color: #1a1a2e; font-size: 68px; font-weight: 900; line-height: 1; margin: 5px 0; }
-    .bono-monto-sub  { color: #1a1a2e; font-size: 22px; font-weight: 900; margin-bottom: 4px; }
-    .bono-desc       { color: #3a2000; font-size: 14px; }
-    .bono-cta-hint   { margin-top: 10px; font-size: 12px; color: #5a3000; font-weight: bold; letter-spacing: 0.5px; }
+    .bono-titulo     { color: #1a1a2e; font-size: 13px; font-weight: bold; text-transform: uppercase; }
+    .bono-monto      { color: #1a1a2e; font-size: 64px; font-weight: 900; line-height: 1; margin: 5px 0; }
+    .bono-monto-sub  { color: #1a1a2e; font-size: 20px; font-weight: 900; }
+    .bono-desc       { color: #3a2000; font-size: 14px; margin-top: 4px; }
+    .bono-cta-hint   { margin-top: 10px; font-size: 12px; color: #5a3000; font-weight: bold; }
 
     .beneficios { padding: 0 20px 20px; }
     .beneficio-item {
@@ -130,121 +130,84 @@
     .beneficio-texto strong { display: block; font-size: 14px; color: #FFD700; }
     .beneficio-texto span   { font-size: 12px; color: #aaa; }
 
-    .urgencia {
-      background: rgba(255,82,82,0.1);
-      border: 1px solid rgba(255,82,82,0.3);
-      border-radius: 10px; padding: 12px 15px;
-      margin: 0 20px 20px; text-align: center;
-      font-size: 13px; color: #ff8a80;
-    }
-    .urgencia strong { color: #ff5252; }
-
     .cta-section { padding: 0 20px 15px; }
     .btn-whatsapp {
       display: flex; align-items: center; justify-content: center; gap: 12px;
       width: 100%; padding: 18px;
       background: linear-gradient(135deg, #25D366, #128C7E);
-      color: white; text-decoration: none;
+      color: white; border: none;
       border-radius: 14px; font-size: 20px; font-weight: 900;
       box-shadow: 0 6px 24px rgba(37,211,102,0.4);
-      transition: all 0.2s; cursor: pointer; border: none;
-      animation: pulso 2s infinite ease-in-out;
+      cursor: pointer; animation: pulso 2s infinite ease-in-out;
     }
-    .btn-whatsapp:hover  { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(37,211,102,0.5); }
-    .btn-whatsapp:active { transform: translateY(0); }
     .btn-sub { text-align: center; font-size: 12px; color: #25D366; margin-top: 8px; font-weight: bold; }
 
-    /* BARRA FLOTANTE FIJA ABAJO */
+    /* BARRA FLOTANTE FIJA */
     .floating-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
+      position: fixed; bottom: 0; left: 0; width: 100%;
       background: rgba(15, 15, 26, 0.95);
       backdrop-filter: blur(10px);
       border-top: 1px solid rgba(255,215,0,0.2);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: center;
-      z-index: 999;
+      padding: 10px 20px; display: flex; justify-content: center; z-index: 998;
     }
     .floating-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; max-width: 420px; padding: 14px;
       background: linear-gradient(135deg, #25D366, #128C7E);
-      color: white; text-decoration: none;
+      color: white; border: none;
       border-radius: 12px; font-size: 16px; font-weight: 900;
-      box-shadow: 0 4px 18px rgba(37,211,102,0.4);
-      cursor: pointer; border: none;
+      box-shadow: 0 4px 18px rgba(37,211,102,0.4); cursor: pointer;
     }
 
-    /* NOTIFICACIÓN FLOTANTE DE PRUEBA SOCIAL EN VIVO */
-    .live-toast {
+    /* BADGE DE RETENCIÓN FLOTANTE PRO */
+    .retention-badge {
       position: fixed;
-      top: 75px;
-      left: 15px;
+      bottom: 80px;
+      right: 20px;
+      background: #ffffff;
+      color: #111111;
+      padding: 10px 16px;
+      border-radius: 30px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      font-size: 12px;
+      font-weight: 800;
+      z-index: 999;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px solid #25D366;
+      animation: pulso 1.5s infinite;
+    }
+
+    /* SOCIAL PROOF TOAST */
+    .live-toast {
+      position: fixed; top: 70px; left: 15px;
       background: rgba(20, 20, 35, 0.95);
       border: 1px solid rgba(255, 215, 0, 0.4);
       border-left: 4px solid #FFD700;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 12px;
-      color: white;
-      z-index: 998;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: all 0.4s ease;
-      pointer-events: none;
-      max-width: 280px;
+      padding: 10px 14px; border-radius: 8px;
+      font-size: 12px; color: white; z-index: 997;
+      opacity: 0; transform: translateY(-10px);
+      transition: all 0.4s ease; pointer-events: none; max-width: 280px;
     }
-    .live-toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .live-toast.show { opacity: 1; transform: translateY(0); }
     .live-toast span { color: #FFD700; font-weight: bold; }
 
-    .social-proof { padding: 15px 20px; text-align: center; }
-    .avatares { display: flex; justify-content: center; margin-bottom: 8px; }
-    .avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 2px solid #1a1a2e; margin-left: -8px;
-      font-size: 18px; display: flex; align-items: center;
-      justify-content: center; background: #333;
-    }
-    .social-texto { font-size: 13px; color: #aaa; }
-    .social-texto strong { color: #FFD700; }
-
-    .pasos { padding: 20px; }
-    .pasos-titulo { text-align: center; font-size: 16px; font-weight: bold; color: #FFD700; margin-bottom: 15px; }
-    .paso { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
-    .paso-num {
-      min-width: 30px; height: 30px; background: #FFD700;
-      color: #1a1a2e; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 14px;
-    }
-    .paso-texto strong { display: block; font-size: 14px; color: white; }
-    .paso-texto span   { font-size: 12px; color: #888; }
-
-    .footer {
-      text-align: center; padding: 20px;
-      font-size: 11px; color: #555;
-      border-top: 1px solid #222;
-    }
+    .footer { text-align: center; padding: 20px; font-size: 11px; color: #555; border-top: 1px solid #222; }
   </style>
 </head>
 <body>
 
-  <!-- NOTIFICACIÓN FLOTANTE DINÁMICA -->
+  <!-- TOAST EN VIVO -->
   <div id="liveToast" class="live-toast">
-    ⚡ <span id="toastUser">Lucas M.</span> acabo de reclamar su bono de <span id="toastMonto">$6.000</span> hace un momento.
+    ⚡ <span id="toastUser">Lucas M.</span> acaba de reclamar su bono de <span id="toastMonto">$6.000</span>.
   </div>
 
   <!-- HEADER -->
   <div class="header">
     <div class="header-logo">🎰 CASINO VIP</div>
-    <div class="header-sub">Plataforma oficial de juegos</div>
+    <div class="header-sub">Plataforma Oficial de Juegos</div>
   </div>
 
   <!-- HERO -->
@@ -254,14 +217,14 @@
     <p class="hero-sub">Depositá hoy y te duplicamos el saldo</p>
   </div>
 
-  <!-- CONTADOR REGRESIVO -->
+  <!-- TIMER -->
   <div class="timer-container">
     ⏱️ Tu reserva expira en: <strong id="countdown">10:00</strong>
   </div>
 
   <!-- BONO BOX -->
   <div class="bono-box" id="bonoBox">
-    <div class="bono-titulo">💰 Bono de bienvenida</div>
+    <div class="bono-titulo">💰 Bono de Bienvenida</div>
     <div class="bono-monto">100%</div>
     <div class="bono-monto-sub">en tu primer depósito</div>
     <div class="bono-desc">Depositás $3.000 → jugás con $6.000</div>
@@ -284,127 +247,48 @@
         <span>Slots, ruleta, blackjack y más</span>
       </div>
     </div>
-    <div class="beneficio-item">
-      <div class="beneficio-icon">💸</div>
-      <div class="beneficio-texto">
-        <strong>Retiros rápidos</strong>
-        <span>Transferencia en el día</span>
-      </div>
-    </div>
-    <div class="beneficio-item">
-      <div class="beneficio-icon">🔒</div>
-      <div class="beneficio-texto">
-        <strong>100% seguro</strong>
-        <span>Plataforma verificada y confiable</span>
-      </div>
-    </div>
   </div>
 
-  <!-- URGENCIA -->
-  <div class="urgencia">
-    ⏰ <strong>¡Quedan pocas plazas hoy!</strong><br>
-    Esta oferta vence a las 23:59 hs
-  </div>
-
-  <!-- BOTÓN WHATSAPP -->
+  <!-- BOTÓN PRINCIPAL -->
   <div class="cta-section">
     <button id="btnWhatsapp" class="btn-whatsapp">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15
-                -.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075
-                -.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059
-                -.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52
-                .149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52
-                -.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51
-                -.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372
-                -.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074
-                .149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625
-                .712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413
-                .248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.528 5.855L0 24l6.335-1.505
-                 A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818
-                 a9.818 9.818 0 01-5.003-1.366l-.36-.214-3.724.885.916-3.619-.235-.372
-                 A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12
-                 12 17.42 17.42 21.818 12 21.818z"/>
-      </svg>
-      QUIERO MI BONO
+      💬 QUIERO MI BONO
     </button>
-    <div class="btn-sub">💬 Atención por WhatsApp en menos de 2 minutos</div>
-  </div>
-
-  <!-- SOCIAL PROOF -->
-  <div class="social-proof">
-    <div class="avatares">
-      <div class="avatar">👨</div>
-      <div class="avatar">👩</div>
-      <div class="avatar">👨</div>
-      <div class="avatar">👩</div>
-      <div class="avatar">👨</div>
-    </div>
-    <div class="social-texto">
-      <strong>+2.847 personas</strong> reclamaron su bono esta semana
-    </div>
-  </div>
-
-  <!-- PASOS -->
-  <div class="pasos">
-    <div class="pasos-titulo">📋 ¿Cómo funciona?</div>
-    <div class="paso">
-      <div class="paso-num">1</div>
-      <div class="paso-texto">
-        <strong>Escribinos por WhatsApp</strong>
-        <span>Hacé clic en cualquier botón verde o dorado</span>
-      </div>
-    </div>
-    <div class="paso">
-      <div class="paso-num">2</div>
-      <div class="paso-texto">
-        <strong>Recibís tu código de bono</strong>
-        <span>Te lo enviamos al instante</span>
-      </div>
-    </div>
-    <div class="paso">
-      <div class="paso-num">3</div>
-      <div class="paso-texto">
-        <strong>Cargás fichas y jugás</strong>
-        <span>Con tu bono del 100% activado</span>
-      </div>
-    </div>
+    <div class="btn-sub">Atención directa por WhatsApp en menos de 2 min</div>
   </div>
 
   <!-- BARRA FLOTANTE -->
   <div class="floating-bar">
     <button id="btnFloating" class="floating-btn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.528 5.855L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.003-1.366l-.36-.214-3.724.885.916-3.619-.235-.372A9.818 9.818 0 012.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 12 17.42 17.42 21.818 12 21.818z"/>
-      </svg>
-      RECLAMAR MI BONO
+      🎁 RECLAMAR MI BONO AHORA
     </button>
   </div>
 
-  <div class="footer">
-    © 2025 Casino VIP · Jugá con responsabilidad · +18
+  <!-- RETENTION BADGE PARA WHATICKET -->
+  <div class="retention-badge" id="retentionBadge">
+    🟢 <span>¿Dudas? Chateá con un soporte</span>
   </div>
 
-  <!-- SCRIPT PRINCIPAL -->
+  <div class="footer">
+    © Casino VIP · Jugá con responsabilidad · +18
+  </div>
+
+  <!-- SCRIPT UNIFICADO -->
   <script>
     let yaRedirigido = false;
 
-    // Función para obtener un número al azar del listado
     function obtenerNumeroRotado() {
       if (typeof WHATSAPP_NUMEROS !== 'undefined' && WHATSAPP_NUMEROS.length > 0) {
-        const indiceAleatorio = Math.floor(Math.random() * WHATSAPP_NUMEROS.length);
-        return WHATSAPP_NUMEROS[indiceAleatorio];
+        const i = Math.floor(Math.random() * WHATSAPP_NUMEROS.length);
+        return WHATSAPP_NUMEROS[i];
       }
-      return '5492236715886'; // Fallback de seguridad
+      return '5492236715886';
     }
 
     function generarREF() {
       let ref = sessionStorage.getItem('casino_ref');
       if (!ref) {
-        const numeroCorto = Math.floor(100000 + Math.random() * 900000);
-        ref = 'REF-' + numeroCorto;
+        ref = 'REF-' + Math.floor(100000 + Math.random() * 900000);
         sessionStorage.setItem('casino_ref', ref);
       }
       return ref;
@@ -433,30 +317,18 @@
           event_source_url: EVENT_URL,
           action_source: 'website',
           event_id: ref,
-          user_data: {
-            fbp: fbp,
-            fbc: fbc,
-            client_user_agent: navigator.userAgent
-          }
+          user_data: { fbp, fbc, client_user_agent: navigator.userAgent }
         }]
       };
 
       const url = `https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
-      
       try {
         if (navigator.sendBeacon) {
           navigator.sendBeacon(url, JSON.stringify(payload));
         } else {
-          fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            keepalive: true
-          });
+          fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), keepalive: true });
         }
-      } catch (e) {
-        console.warn('⚠️ Error enviando Lead:', e);
-      }
+      } catch (e) { console.warn('Error CAPI:', e); }
     }
 
     function irAWhatsapp() {
@@ -466,96 +338,89 @@
       guardarCookiesMeta();
       const ref = generarREF();
 
-      if (typeof fbq === 'function') {
-        fbq('track', 'Lead', {}, { eventID: ref });
-      }
-
+      if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLead(ref);
 
-      // Selección aleatoria del número activo
-      const numeroSeleccionado = obtenerNumeroRotado();
-
-      const mensaje = encodeURIComponent(
-        `Hola! Quiero mas informacion \nREF: ${ref}`
-      );
-
-      window.location.href = `https://api.whatsapp.com/send?phone=${numeroSeleccionado}&text=${mensaje}`;
+      const num = obtenerNumeroRotado();
+      const msg = encodeURIComponent(`Hola! Quiero mi bono de bienvenida\nREF: ${ref}`);
+      window.location.href = `https://api.whatsapp.com/send?phone=${num}&text=${msg}`;
     }
 
-    // CONTADOR REGRESIVO (10 minutos)
-    function iniciarContador() {
-      let tiempoRestante = sessionStorage.getItem('tiempo_oferta');
-      if (!tiempoRestante) {
-        tiempoRestante = 600; // 10 minutos en segundos
+    function abrirWhaticketWidget() {
+      const ref = generarREF();
+      guardarCookiesMeta();
+      if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
+      enviarEventoLead(ref);
+
+      if (window.WTT_API && window.WTT_API.open) {
+        window.WTT_API.open();
       } else {
-        tiempoRestante = parseInt(tiempoRestante);
+        irAWhatsapp();
       }
+    }
 
+    // RETENCIÓN 1: INTENCIÓN DE SALIDA (EXIT INTENT)
+    let exitTriggered = false;
+    document.addEventListener('mouseleave', (e) => {
+      if (e.clientY < 10 && !exitTriggered && !yaRedirigido) {
+        exitTriggered = true;
+        abrirWhaticketWidget();
+      }
+    });
+
+    // RETENCIÓN 2: INACTIVIDAD (12 SEGUNDOS)
+    let idleTimer = setTimeout(() => {
+      if (!yaRedirigido) {
+        abrirWhaticketWidget();
+      }
+    }, 12000);
+
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        if (!yaRedirigido) abrirWhaticketWidget();
+      }, 15000);
+    };
+
+    window.addEventListener('mousemove', resetIdle);
+    window.addEventListener('touchstart', resetIdle);
+
+    // CONTADOR
+    function iniciarContador() {
+      let t = sessionStorage.getItem('tiempo_oferta') || 600;
       const display = document.getElementById('countdown');
-      
-      const intervalo = setInterval(() => {
-        if (tiempoRestante <= 0) {
-          tiempoRestante = 600;
-        }
-        tiempoRestante--;
-        sessionStorage.setItem('tiempo_oferta', tiempoRestante);
-
-        let minutos = Math.floor(tiempoRestante / 60);
-        let segundos = tiempoRestante % 60;
-
-        display.textContent = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+      setInterval(() => {
+        t = t <= 0 ? 600 : t - 1;
+        sessionStorage.setItem('tiempo_oferta', t);
+        let m = Math.floor(t / 60), s = t % 60;
+        display.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
       }, 1000);
     }
 
-    // NOTIFICACIONES FLOTANTES ROTATIVAS DE PRUEBA SOCIAL
+    // TOASTS SOCIALES
     function iniciarToastSocial() {
-      const nombres = ["Lucas M.", "Mariana R.", "Esteban G.", "Florencia P.", "Martín L.", "Romina S."];
-      const montos = ["$6.000", "$10.000", "$4.500", "$12.000", "$8.000"];
+      const nombres = ["Lucas M.", "Mariana R.", "Esteban G.", "Florencia P."];
+      const montos = ["$6.000", "$10.000", "$4.500", "$12.000"];
       const toast = document.getElementById('liveToast');
-      const txtUser = document.getElementById('toastUser');
-      const txtMonto = document.getElementById('toastMonto');
-
       setInterval(() => {
-        const randomNombre = nombres[Math.floor(Math.random() * nombres.length)];
-        const randomMonto = montos[Math.floor(Math.random() * montos.length)];
-        
-        txtUser.textContent = randomNombre;
-        txtMonto.textContent = randomMonto;
-
+        document.getElementById('toastUser').textContent = nombres[Math.floor(Math.random() * nombres.length)];
+        document.getElementById('toastMonto').textContent = montos[Math.floor(Math.random() * montos.length)];
         toast.classList.add('show');
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 4000);
-      }, 12000);
+        setTimeout(() => toast.classList.remove('show'), 4000);
+      }, 11000);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       guardarCookiesMeta();
       generarREF();
       iniciarContador();
-      setTimeout(iniciarToastSocial, 3000);
+      setTimeout(iniciarToastSocial, 2500);
 
-      const bonoBox     = document.getElementById('bonoBox');
-      const btnWhatsapp = document.getElementById('btnWhatsapp');
-      const btnFloating = document.getElementById('btnFloating');
-
-      btnWhatsapp.addEventListener('click', (e) => {
-        e.stopPropagation();
-        irAWhatsapp();
-      });
-
-      bonoBox.addEventListener('click', () => {
-        irAWhatsapp();
-      });
-
-      if (btnFloating) {
-        btnFloating.addEventListener('click', (e) => {
-          e.stopPropagation();
-          irAWhatsapp();
-        });
-      }
+      document.getElementById('btnWhatsapp').addEventListener('click', irAWhatsapp);
+      document.getElementById('bonoBox').addEventListener('click', irAWhatsapp);
+      document.getElementById('btnFloating').addEventListener('click', irAWhatsapp);
+      document.getElementById('retentionBadge').addEventListener('click', abrirWhaticketWidget);
     });
   </script>
-
 </body>
 </html>
