@@ -13,7 +13,7 @@
     const ACCESS_TOKEN = 'EAAcLCVnJCDoBSPAZBVjvVGxtaltZCF8W4cnwWhtmDApHEecR0J7KhmG0x5xT8mLqFPqTZCfQF5I1pRSQ8keLsJOExuh1srOGQm9tw3v9tTkRcEacih96DcbsTDEypZCQ5dgZAjfPoAlXFE2Xt6QQp9V9NVN5yKMsKh3KelSE27X4zdxdyHnncMeu1ntiPpylElAZDZD';
     const EVENT_URL    = 'https://goodlucky31.github.io/landing/';
 
-    // CHAT WEB DE WHATICKET (Entrada directa sin pedir ningún dato)
+    // CHAT WEB DE WHATICKET
     window.WTT_API = { 
       config: {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
@@ -41,6 +41,8 @@
     fbq('init', PIXEL_ID);
     fbq('track', 'PageView');
   </script>
+
+  <!-- SCRIPT WHATICKET WIDGET -->
   <script async crossorigin="*" src="https://public.whaticket.com/widget/production/wtt-widget-default.js"></script>
 
   <style>
@@ -134,7 +136,6 @@
     }
     .btn-sub { text-align: center; font-size: 12px; color: #6e85ff; margin-top: 8px; font-weight: bold; }
 
-    /* BARRA FLOTANTE FIJA */
     .floating-bar {
       position: fixed; bottom: 0; left: 0; width: 100%;
       background: rgba(15, 15, 26, 0.95);
@@ -150,7 +151,6 @@
       box-shadow: 0 4px 18px rgba(57,86,255,0.4); cursor: pointer;
     }
 
-    /* TOAST EN VIVO */
     .live-toast {
       position: fixed; top: 70px; left: 15px;
       background: rgba(20, 20, 35, 0.95);
@@ -169,31 +169,26 @@
 </head>
 <body>
 
-  <!-- TOAST EN VIVO -->
   <div id="liveToast" class="live-toast">
     ⚡ <span id="toastUser">Lucas M.</span> acaba de reclamar su bono de <span id="toastMonto">$6.000</span>.
   </div>
 
-  <!-- HEADER -->
   <div class="header">
     <div class="header-logo">🎰 CASINO VIP</div>
     <div class="header-sub">Plataforma Oficial de Juegos</div>
   </div>
 
-  <!-- HERO -->
   <div class="hero">
     <div class="badge">🔥 OFERTA LIMITADA</div>
     <h1>Conseguí tu<br><span>Bono de Bienvenida</span></h1>
     <p class="hero-sub">Depositá hoy y te duplicamos el saldo</p>
   </div>
 
-  <!-- TIMER -->
   <div class="timer-container">
     ⏱️ Tu reserva expira en: <strong id="countdown">10:00</strong>
   </div>
 
-  <!-- BONO BOX -->
-  <div class="bono-box" onclick="abrirChatWeb()">
+  <div class="bono-box" id="btnBono">
     <div class="bono-titulo">💰 Bono de Bienvenida</div>
     <div class="bono-monto">100%</div>
     <div class="bono-monto-sub">en tu primer depósito</div>
@@ -201,7 +196,6 @@
     <div class="bono-cta-hint">👆 Tocá aquí para abrir el chat en vivo</div>
   </div>
 
-  <!-- BENEFICIOS -->
   <div class="beneficios">
     <div class="beneficio-item">
       <div class="beneficio-icon">⚡</div>
@@ -219,17 +213,15 @@
     </div>
   </div>
 
-  <!-- BOTÓN PRINCIPAL -->
   <div class="cta-section">
-    <button class="btn-chat" onclick="abrirChatWeb()">
+    <button id="btnChatMain" class="btn-chat">
       💬 CHAT EN VIVO
     </button>
     <div class="btn-sub">Atención directa online sin esperas</div>
   </div>
 
-  <!-- BARRA FLOTANTE -->
   <div class="floating-bar">
-    <button class="floating-btn" onclick="abrirChatWeb()">
+    <button id="btnFloat" class="floating-btn">
       🎁 RECLAMAR MI BONO AHORA
     </button>
   </div>
@@ -238,7 +230,6 @@
     © Casino VIP · Jugá con responsabilidad · +18
   </div>
 
-  <!-- SCRIPT PARA MANEJAR EL CHAT WEB Y MEDIR EL PIXEL -->
   <script>
     function generarREF() {
       let ref = sessionStorage.getItem('casino_ref');
@@ -267,21 +258,21 @@
       } catch (e) {}
     }
 
-    // ESTA FUNCIÓN ABRE EL CHAT EN LA PÁGINA (SIN IR A WHATSAPP)
+    // ABRIR CHAT BUSCANDO EL BOTÓN OFICIAL DEL WIDGET EN EL DOM
     function abrirChatWeb() {
       const ref = generarREF();
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLead(ref);
 
-      if (window.WTT_API && typeof window.WTT_API.open === 'function') {
+      // Busca el botón que crea el script de Whaticket y le fuerza el clic
+      const widgetButton = document.querySelector('button[class*="wtt"], div[class*="wtt"], iframe');
+      if (widgetButton) {
+        widgetButton.click();
+      } else if (window.WTT_API && typeof window.WTT_API.open === 'function') {
         window.WTT_API.open();
-      } else {
-        const toggleBtn = document.querySelector('.wtt-toggle-button, [class*="wtt-"]');
-        if (toggleBtn) toggleBtn.click();
       }
     }
 
-    // CONTADOR Y NOTIFICACIONES
     function iniciarContador() {
       let t = sessionStorage.getItem('tiempo_oferta') || 600;
       const display = document.getElementById('countdown');
@@ -305,10 +296,15 @@
       }, 11000);
     }
 
+    // ASIGNAR EVENTOS UNA VEZ CARGADO EL DOM
     document.addEventListener('DOMContentLoaded', () => {
       generarREF();
       iniciarContador();
       setTimeout(iniciarToastSocial, 2500);
+
+      document.getElementById('btnBono').addEventListener('click', abrirChatWeb);
+      document.getElementById('btnChatMain').addEventListener('click', abrirChatWeb);
+      document.getElementById('btnFloat').addEventListener('click', abrirChatWeb);
     });
   </script>
 </body>
