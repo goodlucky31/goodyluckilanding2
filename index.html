@@ -7,30 +7,23 @@
 
   <script>
     // ════════════════════════════════════════
-    // CONFIGURACIÓN CENTRALIZADA
+    // CONFIGURACIÓN DE META PIXEL & WHATICKET
     // ════════════════════════════════════════
     const PIXEL_ID     = '2141536543066953';
     const ACCESS_TOKEN = 'EAAcLCVnJCDoBSPAZBVjvVGxtaltZCF8W4cnwWhtmDApHEecR0J7KhmG0x5xT8mLqFPqTZCfQF5I1pRSQ8keLsJOExuh1srOGQm9tw3v9tTkRcEacih96DcbsTDEypZCQ5dgZAjfPoAlXFE2Xt6QQp9V9NVN5yKMsKh3KelSE27X4zdxdyHnncMeu1ntiPpylElAZDZD';
-    
-    // Rotador de WhatsApps vinculados a tu Whaticket
-    const WHATSAPP_NUMEROS = [
-      '5492235343559',
-      '5492236715886'
-    ];
+    const EVENT_URL    = 'https://goodlucky31.github.io/landing/';
 
-    const EVENT_URL = 'https://goodlucky31.github.io/landing/';
-
-    // CONFIGURACIÓN DE WHATICKET WIDGET PRO
+    // CHAT WEB DE WHATICKET (Entrada directa sin pedir ningún dato)
     window.WTT_API = { 
       config: {
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
-        "position": "right",
+        "position": "left",
         "toggleButtonEnabled": true,
-        "chatColor": "#25D366",
-        "isAudioEnabled": true,
-        "requestName": true,
+        "chatColor": "#3956FF",
+        "isAudioEnabled": false,
+        "requestName": false,
         "requestEmail": false,
-        "requestNumber": true
+        "requestNumber": false
       } 
     };
   </script>
@@ -110,7 +103,6 @@
       text-align: center;
       box-shadow: 0 8px 32px rgba(255,215,0,0.3);
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
       animation: pulso 2s infinite ease-in-out;
     }
     .bono-titulo     { color: #1a1a2e; font-size: 13px; font-weight: bold; text-transform: uppercase; }
@@ -131,56 +123,34 @@
     .beneficio-texto span   { font-size: 12px; color: #aaa; }
 
     .cta-section { padding: 0 20px 15px; }
-    .btn-whatsapp {
+    .btn-chat {
       display: flex; align-items: center; justify-content: center; gap: 12px;
       width: 100%; padding: 18px;
-      background: linear-gradient(135deg, #25D366, #128C7E);
+      background: linear-gradient(135deg, #3956FF, #12218C);
       color: white; border: none;
       border-radius: 14px; font-size: 20px; font-weight: 900;
-      box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+      box-shadow: 0 6px 24px rgba(57,86,255,0.4);
       cursor: pointer; animation: pulso 2s infinite ease-in-out;
     }
-    .btn-sub { text-align: center; font-size: 12px; color: #25D366; margin-top: 8px; font-weight: bold; }
+    .btn-sub { text-align: center; font-size: 12px; color: #6e85ff; margin-top: 8px; font-weight: bold; }
 
     /* BARRA FLOTANTE FIJA */
     .floating-bar {
       position: fixed; bottom: 0; left: 0; width: 100%;
       background: rgba(15, 15, 26, 0.95);
-      backdrop-filter: blur(10px);
       border-top: 1px solid rgba(255,215,0,0.2);
       padding: 10px 20px; display: flex; justify-content: center; z-index: 998;
     }
     .floating-btn {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; max-width: 420px; padding: 14px;
-      background: linear-gradient(135deg, #25D366, #128C7E);
+      background: linear-gradient(135deg, #3956FF, #12218C);
       color: white; border: none;
       border-radius: 12px; font-size: 16px; font-weight: 900;
-      box-shadow: 0 4px 18px rgba(37,211,102,0.4); cursor: pointer;
+      box-shadow: 0 4px 18px rgba(57,86,255,0.4); cursor: pointer;
     }
 
-    /* BADGE DE RETENCIÓN FLOTANTE PRO */
-    .retention-badge {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background: #ffffff;
-      color: #111111;
-      padding: 10px 16px;
-      border-radius: 30px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      font-size: 12px;
-      font-weight: 800;
-      z-index: 999;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 2px solid #25D366;
-      animation: pulso 1.5s infinite;
-    }
-
-    /* SOCIAL PROOF TOAST */
+    /* TOAST EN VIVO */
     .live-toast {
       position: fixed; top: 70px; left: 15px;
       background: rgba(20, 20, 35, 0.95);
@@ -223,12 +193,12 @@
   </div>
 
   <!-- BONO BOX -->
-  <div class="bono-box" id="bonoBox">
+  <div class="bono-box" onclick="abrirChatWeb()">
     <div class="bono-titulo">💰 Bono de Bienvenida</div>
     <div class="bono-monto">100%</div>
     <div class="bono-monto-sub">en tu primer depósito</div>
     <div class="bono-desc">Depositás $3.000 → jugás con $6.000</div>
-    <div class="bono-cta-hint">👆 Tocá aquí para reclamarlo</div>
+    <div class="bono-cta-hint">👆 Tocá aquí para abrir el chat en vivo</div>
   </div>
 
   <!-- BENEFICIOS -->
@@ -251,40 +221,25 @@
 
   <!-- BOTÓN PRINCIPAL -->
   <div class="cta-section">
-    <button id="btnWhatsapp" class="btn-whatsapp">
-      💬 QUIERO MI BONO
+    <button class="btn-chat" onclick="abrirChatWeb()">
+      💬 CHAT EN VIVO
     </button>
-    <div class="btn-sub">Atención directa por WhatsApp en menos de 2 min</div>
+    <div class="btn-sub">Atención directa online sin esperas</div>
   </div>
 
   <!-- BARRA FLOTANTE -->
   <div class="floating-bar">
-    <button id="btnFloating" class="floating-btn">
+    <button class="floating-btn" onclick="abrirChatWeb()">
       🎁 RECLAMAR MI BONO AHORA
     </button>
-  </div>
-
-  <!-- RETENTION BADGE PARA WHATICKET -->
-  <div class="retention-badge" id="retentionBadge">
-    🟢 <span>¿Dudas? Chateá con un soporte</span>
   </div>
 
   <div class="footer">
     © Casino VIP · Jugá con responsabilidad · +18
   </div>
 
-  <!-- SCRIPT UNIFICADO -->
+  <!-- SCRIPT PARA MANEJAR EL CHAT WEB Y MEDIR EL PIXEL -->
   <script>
-    let yaRedirigido = false;
-
-    function obtenerNumeroRotado() {
-      if (typeof WHATSAPP_NUMEROS !== 'undefined' && WHATSAPP_NUMEROS.length > 0) {
-        const i = Math.floor(Math.random() * WHATSAPP_NUMEROS.length);
-        return WHATSAPP_NUMEROS[i];
-      }
-      return '5492236715886';
-    }
-
     function generarREF() {
       let ref = sessionStorage.getItem('casino_ref');
       if (!ref) {
@@ -294,22 +249,7 @@
       return ref;
     }
 
-    function getCookie(name) {
-      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-      return match ? match[2] : null;
-    }
-
-    function guardarCookiesMeta() {
-      const fbp = getCookie('_fbp');
-      const fbc = getCookie('_fbc');
-      if (fbp) sessionStorage.setItem('casino_fbp', fbp);
-      if (fbc) sessionStorage.setItem('casino_fbc', fbc);
-    }
-
     function enviarEventoLead(ref) {
-      const fbp = sessionStorage.getItem('casino_fbp') || getCookie('_fbp') || '';
-      const fbc = sessionStorage.getItem('casino_fbc') || getCookie('_fbc') || '';
-
       const payload = {
         data: [{
           event_name: 'Lead',
@@ -317,75 +257,31 @@
           event_source_url: EVENT_URL,
           action_source: 'website',
           event_id: ref,
-          user_data: { fbp, fbc, client_user_agent: navigator.userAgent }
+          user_data: { client_user_agent: navigator.userAgent }
         }]
       };
 
       const url = `https://graph.facebook.com/v19.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
       try {
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(url, JSON.stringify(payload));
-        } else {
-          fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), keepalive: true });
-        }
-      } catch (e) { console.warn('Error CAPI:', e); }
+        fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), keepalive: true });
+      } catch (e) {}
     }
 
-    function irAWhatsapp() {
-      if (yaRedirigido) return;
-      yaRedirigido = true;
-
-      guardarCookiesMeta();
+    // ESTA FUNCIÓN ABRE EL CHAT EN LA PÁGINA (SIN IR A WHATSAPP)
+    function abrirChatWeb() {
       const ref = generarREF();
-
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLead(ref);
 
-      const num = obtenerNumeroRotado();
-      const msg = encodeURIComponent(`Hola! Quiero mi bono de bienvenida\nREF: ${ref}`);
-      window.location.href = `https://api.whatsapp.com/send?phone=${num}&text=${msg}`;
-    }
-
-    function abrirWhaticketWidget() {
-      const ref = generarREF();
-      guardarCookiesMeta();
-      if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
-      enviarEventoLead(ref);
-
-      if (window.WTT_API && window.WTT_API.open) {
+      if (window.WTT_API && typeof window.WTT_API.open === 'function') {
         window.WTT_API.open();
       } else {
-        irAWhatsapp();
+        const toggleBtn = document.querySelector('.wtt-toggle-button, [class*="wtt-"]');
+        if (toggleBtn) toggleBtn.click();
       }
     }
 
-    // RETENCIÓN 1: INTENCIÓN DE SALIDA (EXIT INTENT)
-    let exitTriggered = false;
-    document.addEventListener('mouseleave', (e) => {
-      if (e.clientY < 10 && !exitTriggered && !yaRedirigido) {
-        exitTriggered = true;
-        abrirWhaticketWidget();
-      }
-    });
-
-    // RETENCIÓN 2: INACTIVIDAD (12 SEGUNDOS)
-    let idleTimer = setTimeout(() => {
-      if (!yaRedirigido) {
-        abrirWhaticketWidget();
-      }
-    }, 12000);
-
-    const resetIdle = () => {
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        if (!yaRedirigido) abrirWhaticketWidget();
-      }, 15000);
-    };
-
-    window.addEventListener('mousemove', resetIdle);
-    window.addEventListener('touchstart', resetIdle);
-
-    // CONTADOR
+    // CONTADOR Y NOTIFICACIONES
     function iniciarContador() {
       let t = sessionStorage.getItem('tiempo_oferta') || 600;
       const display = document.getElementById('countdown');
@@ -397,7 +293,6 @@
       }, 1000);
     }
 
-    // TOASTS SOCIALES
     function iniciarToastSocial() {
       const nombres = ["Lucas M.", "Mariana R.", "Esteban G.", "Florencia P."];
       const montos = ["$6.000", "$10.000", "$4.500", "$12.000"];
@@ -411,15 +306,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      guardarCookiesMeta();
       generarREF();
       iniciarContador();
       setTimeout(iniciarToastSocial, 2500);
-
-      document.getElementById('btnWhatsapp').addEventListener('click', irAWhatsapp);
-      document.getElementById('bonoBox').addEventListener('click', irAWhatsapp);
-      document.getElementById('btnFloating').addEventListener('click', irAWhatsapp);
-      document.getElementById('retentionBadge').addEventListener('click', abrirWhaticketWidget);
     });
   </script>
 </body>
