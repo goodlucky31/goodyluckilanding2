@@ -31,18 +31,20 @@
   src="https://www.facebook.com/tr?id=37725252257120198&ev=PageView&noscript=1"
   /></noscript>
 
-  <!-- SCRIPT CRISP CHAT CON TU ID -->
-  <script type="text/javascript">
-    window.$crisp = [];
-    window.CRISP_WEBSITE_ID = "a4e6331e-99ef-4878-ba7e-f2dab998ae88";
-    (function(){
-      d = document;
-      s = d.createElement("script");
-      s.src = "https://client.crisp.chat/l.js";
-      s.async = 1;
-      d.getElementsByTagName("head")[0].appendChild(s);
-    })();
+  <!-- WIDGET WHATICKET -->
+  <script>
+    window.WTT_API = { config: {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
+        "position": "left",
+        "toggleButtonEnabled": true,
+        "chatColor": "#3956FF",
+        "isAudioEnabled": false,
+        "requestName": false,
+        "requestEmail": false,
+        "requestNumber": false
+      } };
   </script>
+  <script async crossorigin="*" src="https://public.whaticket.com/widget/production/wtt-widget-default.js"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -232,9 +234,6 @@
   </div>
 
   <script>
-    let tituloOriginal = document.title;
-    let intervaloTitilado = null;
-
     function getCookie(name) {
       let value = `; ${document.cookie}`;
       let parts = value.split(`; ${name}=`);
@@ -251,26 +250,11 @@
       return ref;
     }
 
-    function asociarREFaCrisp(ref) {
-      if (typeof $crisp !== 'undefined') {
-        $crisp.push(["set", "session:data", [[["ref_id", ref]]]]);
-      }
-    }
-
-    function enviarEventoLeadAvanzado(ref, email = null, telefono = null) {
+    function enviarEventoLeadAvanzado(ref) {
       const urlParams = new URLSearchParams(window.location.search);
       const fbclid = urlParams.get('fbclid');
       const fbp = getCookie('_fbp');
       const fbc = getCookie('_fbc') || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : null);
-
-      const userData = {
-        client_user_agent: navigator.userAgent,
-        fbp: fbp,
-        fbc: fbc
-      };
-
-      if (email) userData.em = email.trim().toLowerCase();
-      if (telefono) userData.ph = telefono.replace(/\D/g, '');
 
       const payload = {
         data: [{
@@ -279,7 +263,11 @@
           event_source_url: EVENT_URL,
           action_source: 'website',
           event_id: ref,
-          user_data: userData
+          user_data: {
+            client_user_agent: navigator.userAgent,
+            fbp: fbp,
+            fbc: fbc
+          }
         }]
       };
 
@@ -292,30 +280,23 @@
     function abrirChat() {
       const ref = generarREF();
       
+      // Registrar evento Lead en Meta Pixel / CAPI
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLeadAvanzado(ref);
 
-      asociarREFaCrisp(ref);
-      if (typeof $crisp !== 'undefined') {
-        $crisp.push(['do', 'chat:open']);
-      }
-      detenerAlertaPestana();
-    }
-
-    function iniciarAlertaPestana() {
-      if (intervaloTitilado) return;
-      let bandera = false;
-      intervaloTitilado = setInterval(() => {
-        document.title = bandera ? "💬 ¡1 Mensaje Nuevo!" : "🎰 CASINO VIP";
-        bandera = !bandera;
-      }, 1000);
-    }
-
-    function detenerAlertaPestana() {
-      if (intervaloTitilado) {
-        clearInterval(intervaloTitilado);
-        intervaloTitilado = null;
-        document.title = tituloOriginal;
+      // Activar apertura del widget Whaticket
+      if (window.WTT_API && typeof window.WTT_API.open === 'function') {
+        window.WTT_API.open();
+      } else {
+        // Simular clic en el botón flotante nativo de Whaticket si no expone la API open()
+        const element = document.querySelector('iframe[title*="chat"], iframe[src*="whaticket"], [class*="wtt-"], [id*="wtt-"]');
+        if (element) {
+          element.click();
+        } else {
+          // Intento de búsqueda en caso de contenedor personalizado
+          const wttBtn = document.querySelector('div[style*="position: fixed"]');
+          if (wttBtn) wttBtn.click();
+        }
       }
     }
 
@@ -343,38 +324,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const refActual = generarREF();
+      generarREF();
       iniciarContador();
       setTimeout(iniciarToastSocial, 2500);
 
       document.getElementById('btnBono').addEventListener('click', abrirChat);
       document.getElementById('btnChatMain').addEventListener('click', abrirChat);
       document.getElementById('btnFloat').addEventListener('click', abrirChat);
-
-      if (typeof $crisp !== 'undefined') {
-        asociarREFaCrisp(refActual);
-
-        $crisp.push(["on", "message:sent", function() {
-          asociarREFaCrisp(generarREF());
-        }]);
-
-        $crisp.push(["on", "message:received", function() {
-          $crisp.push(['do', 'chat:open']);
-          iniciarAlertaPestana();
-        }]);
-
-        $crisp.push(["on", "chat:opened", function() {
-          detenerAlertaPestana();
-        }]);
-
-        $crisp.push(["on", "user:email:changed", function(email) {
-          enviarEventoLeadAvanzado(generarREF(), email, null);
-        }]);
-
-        $crisp.push(["on", "user:phone:changed", function(phone) {
-          enviarEventoLeadAvanzado(generarREF(), null, phone);
-        }]);
-      }
     });
   </script>
 </body>
