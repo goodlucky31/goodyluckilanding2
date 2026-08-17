@@ -7,11 +7,11 @@
 
   <script>
     // ════════════════════════════════════════
-    // CONFIGURACIÓN DE META PIXEL
+    // CONFIGURACIÓN DE META PIXEL & CAPI
     // ════════════════════════════════════════
-    const PIXEL_ID     = '2141536543066953';
-    const ACCESS_TOKEN = 'EAAcLCVnJCDoBSPAZBVjvVGxtaltZCF8W4cnwWhtmDApHEecR0J7KhmG0x5xT8mLqFPqTZCfQF5I1pRSQ8keLsJOExuh1srOGQm9tw3v9tTkRcEacih96DcbsTDEypZCQ5dgZAjfPoAlXFE2Xt6QQp9V9NVN5yKMsKh3KelSE27X4zdxdyHnncMeu1ntiPpylElAZDZD';
-    const EVENT_URL    = 'https://goodlucky31.github.io/landing/';
+    const PIXEL_ID     = '37725252257120198';
+    const ACCESS_TOKEN = 'EAAcxPtUCrnUBSIVsLqZBqAtErzbmt1KoMME1Yw5GkC6eeehmiIPuzAy1LuKL8hWirNEnZBHjFxhVWvrfuBj4wKNvEOjHgn7Xps7JGRE14Pb7cg2diZBqNHehRUlQ9IIhntheI7EVZC0B6oQ1lo3jNRrCPaX23UZBwdU60gZCmDei85euMARj5v0X6ymRN4CEK8ZBgZDZD';
+    const EVENT_URL    = 'https://goodlucky31.github.io/goodyluckilanding2/';
   </script>
 
   <!-- META PIXEL BASE -->
@@ -27,6 +27,9 @@
     fbq('init', PIXEL_ID);
     fbq('track', 'PageView');
   </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=37725252257120198&ev=PageView&noscript=1"
+  /></noscript>
 
   <!-- SCRIPT CRISP CHAT CON TU ID -->
   <script type="text/javascript">
@@ -232,7 +235,6 @@
     let tituloOriginal = document.title;
     let intervaloTitilado = null;
 
-    // Recupera cookies de rastreo de Meta
     function getCookie(name) {
       let value = `; ${document.cookie}`;
       let parts = value.split(`; ${name}=`);
@@ -240,7 +242,6 @@
       return null;
     }
 
-    // Genera y mantiene el código de referencia en sesión
     function generarREF() {
       let ref = sessionStorage.getItem('casino_ref');
       if (!ref) {
@@ -250,14 +251,12 @@
       return ref;
     }
 
-    // Sincroniza el REF con la app de Crisp
     function asociarREFaCrisp(ref) {
       if (typeof $crisp !== 'undefined') {
         $crisp.push(["set", "session:data", [[["ref_id", ref]]]]);
       }
     }
 
-    // Envío completo de datos a la Conversions API de Meta
     function enviarEventoLeadAvanzado(ref, email = null, telefono = null) {
       const urlParams = new URLSearchParams(window.location.search);
       const fbclid = urlParams.get('fbclid');
@@ -293,11 +292,9 @@
     function abrirChat() {
       const ref = generarREF();
       
-      // Mide Lead en Pixel Web y Conversions API
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLeadAvanzado(ref);
 
-      // Asigna REF a Crisp y despliega la ventana
       asociarREFaCrisp(ref);
       if (typeof $crisp !== 'undefined') {
         $crisp.push(['do', 'chat:open']);
@@ -355,15 +352,12 @@
       document.getElementById('btnFloat').addEventListener('click', abrirChat);
 
       if (typeof $crisp !== 'undefined') {
-        // Inyecta el REF en la sesión apenas carga la página o abren el chat por su cuenta
         asociarREFaCrisp(refActual);
 
-        // Si el usuario escribe directamente en el widget de Crisp sin tocar botones
         $crisp.push(["on", "message:sent", function() {
           asociarREFaCrisp(generarREF());
         }]);
 
-        // Cuando el operador responde desde el cel, expande la pantalla y titila la pestaña
         $crisp.push(["on", "message:received", function() {
           $crisp.push(['do', 'chat:open']);
           iniciarAlertaPestana();
@@ -373,7 +367,6 @@
           detenerAlertaPestana();
         }]);
 
-        // Si el cliente ingresa datos en Crisp, re-envía evento enriquecido a Meta
         $crisp.push(["on", "user:email:changed", function(email) {
           enviarEventoLeadAvanzado(generarREF(), email, null);
         }]);
