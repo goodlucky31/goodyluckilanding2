@@ -37,11 +37,7 @@
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
         "position": "left",
         "toggleButtonEnabled": true,
-        "chatColor": "#3956FF",
-        "isAudioEnabled": false,
-        "requestName": false,
-        "requestEmail": false,
-        "requestNumber": false
+        "chatColor": "#3956FF"
       } };
   </script>
   <script async crossorigin="*" src="https://public.whaticket.com/widget/production/wtt-widget-default.js"></script>
@@ -55,6 +51,30 @@
       min-height: 100vh;
       color: white;
       padding-bottom: 110px;
+    }
+
+    /* ════════════════════════════════════════
+       ESTILOS Y ANIMACIÓN DE LA BURBUJA WHATICKET
+       ════════════════════════════════════════ */
+    iframe[src*="whaticket"], 
+    [id*="wtt-"],
+    div[class*="wtt-"] {
+      transform: scale(1.35) !important;
+      transform-origin: bottom left !important;
+      bottom: 85px !important;
+      left: 20px !important;
+      z-index: 9999 !important;
+      animation: flotarBurbuja 2.2s infinite ease-in-out !important;
+      filter: drop-shadow(0 8px 20px rgba(57, 86, 255, 0.6)) !important;
+    }
+
+    @keyframes flotarBurbuja {
+      0%, 100% {
+        transform: scale(1.35) translateY(0);
+      }
+      50% {
+        transform: scale(1.42) translateY(-10px);
+      }
     }
 
     .header {
@@ -280,23 +300,14 @@
     function abrirChat() {
       const ref = generarREF();
       
-      // Registrar evento Lead en Meta Pixel / CAPI
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLeadAvanzado(ref);
 
-      // Activar apertura del widget Whaticket
-      if (window.WTT_API && typeof window.WTT_API.open === 'function') {
-        window.WTT_API.open();
+      let wttElement = document.querySelector('[id*="wtt-"]') || document.querySelector('iframe[src*="whaticket"]');
+      if (wttElement) {
+        wttElement.click();
       } else {
-        // Simular clic en el botón flotante nativo de Whaticket si no expone la API open()
-        const element = document.querySelector('iframe[title*="chat"], iframe[src*="whaticket"], [class*="wtt-"], [id*="wtt-"]');
-        if (element) {
-          element.click();
-        } else {
-          // Intento de búsqueda en caso de contenedor personalizado
-          const wttBtn = document.querySelector('div[style*="position: fixed"]');
-          if (wttBtn) wttBtn.click();
-        }
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
     }
 
