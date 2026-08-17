@@ -31,16 +31,18 @@
   src="https://www.facebook.com/tr?id=37725252257120198&ev=PageView&noscript=1"
   /></noscript>
 
-  <!-- WIDGET WHATICKET -->
-  <script>
-    window.WTT_API = { config: {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55SWQiOiI3NWI5NWE3OS0yYTRmLTRhNTEtOGM2MC1lOWRkNDExMmU5YWMiLCJjb25uZWN0aW9uSWQiOiI2NjcxZDc2MS1iMzU2LTRkYjItODY3ZC1iNTY4YjNlNDBlNWUiLCJpYXQiOjE3ODY5MTI4MTR9._xb5drNZEvOr8N60VJekfqMCsRZD0OWAabNbsMyznvQ",
-        "position": "left",
-        "toggleButtonEnabled": true,
-        "chatColor": "#3956FF"
-      } };
+  <!-- WIDGET CRISP CHAT -->
+  <script type="text/javascript">
+    window.$crisp = [];
+    window.CRISP_WEBSITE_ID = "a4e6331e-99ef-4878-ba7e-f2dab998ae88";
+    (function() {
+      d = document;
+      s = d.createElement("script");
+      s.src = "https://client.crisp.chat/l.js";
+      s.async = 1;
+      d.getElementsByTagName("head")[0].appendChild(s);
+    })();
   </script>
-  <script async crossorigin="*" src="https://public.whaticket.com/widget/production/wtt-widget-default.js"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -51,30 +53,6 @@
       min-height: 100vh;
       color: white;
       padding-bottom: 110px;
-    }
-
-    /* ════════════════════════════════════════
-       ESTILOS Y ANIMACIÓN DE LA BURBUJA WHATICKET
-       ════════════════════════════════════════ */
-    iframe[src*="whaticket"], 
-    [id*="wtt-"],
-    div[class*="wtt-"] {
-      transform: scale(1.35) !important;
-      transform-origin: bottom left !important;
-      bottom: 85px !important;
-      left: 20px !important;
-      z-index: 9999 !important;
-      animation: flotarBurbuja 2.2s infinite ease-in-out !important;
-      filter: drop-shadow(0 8px 20px rgba(57, 86, 255, 0.6)) !important;
-    }
-
-    @keyframes flotarBurbuja {
-      0%, 100% {
-        transform: scale(1.35) translateY(0);
-      }
-      50% {
-        transform: scale(1.42) translateY(-10px);
-      }
     }
 
     .header {
@@ -300,14 +278,13 @@
     function abrirChat() {
       const ref = generarREF();
       
+      // Tracking en Meta Pixel + CAPI
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLeadAvanzado(ref);
 
-      let wttElement = document.querySelector('[id*="wtt-"]') || document.querySelector('iframe[src*="whaticket"]');
-      if (wttElement) {
-        wttElement.click();
-      } else {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      // Apertura directa del chat de Crisp
+      if (window.$crisp) {
+        $crisp.push(['do', 'chat:open']);
       }
     }
 
