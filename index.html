@@ -278,13 +278,15 @@
     function abrirChat() {
       const ref = generarREF();
       
-      // Tracking en Meta Pixel + CAPI
+      // 1. Tracking Meta Pixel + CAPI
       if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: ref });
       enviarEventoLeadAvanzado(ref);
 
-      // Apertura directa del chat de Crisp
+      // 2. Control e Integración con Crisp Chat
       if (window.$crisp) {
         $crisp.push(['do', 'chat:open']);
+        $crisp.push(["set", "session:data", [[["Ref Meta", ref]]]]);
+        $crisp.push(["do", "message:insert", ["¡Hola! Quiero mi bono de bienvenida del 100 por ciento. (Ref: " + ref + ")"]]);
       }
     }
 
