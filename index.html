@@ -379,7 +379,7 @@
     © 2025 Casino VIP · Jugá con responsabilidad · +18
   </div>
 
-  <!-- SCRIPT PRINCIPAL OPTIMIZADO -->
+  <!-- SCRIPT PRINCIPAL -->
   <script>
     let yaRedirigido = false;
 
@@ -387,7 +387,8 @@
       let ref = sessionStorage.getItem('casino_ref');
       if (!ref) {
         const numeroCorto = Math.floor(100000 + Math.random() * 900000);
-        ref = 'REF-' + numeroCorto;
+        // Genera el código con la 'T' al final obligatoriamente
+        ref = 'REF-' + numeroCorto + 'T';
         sessionStorage.setItem('casino_ref', ref);
       }
       return ref;
@@ -404,11 +405,13 @@
         fbq('track', 'Lead', {}, { eventID: ref });
       }
 
+      // MENSAJE LIMPIO
       const mensaje = encodeURIComponent(
-        `Hola! Quiero mas informacion \nREF: ${ref}`
+        `Hola! Quiero mi bono.\n\n` +
+        `REF: ${ref}`
       );
 
-      // Redirección directa sin bloqueos ni delays de red
+      // Redirección directa a WhatsApp
       window.location.href = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUM}&text=${mensaje}`;
     }
 
@@ -416,7 +419,7 @@
     function iniciarContador() {
       let tiempoRestante = sessionStorage.getItem('tiempo_oferta');
       if (!tiempoRestante) {
-        tiempoRestante = 600; // 10 minutos en segundos
+        tiempoRestante = 600;
       } else {
         tiempoRestante = parseInt(tiempoRestante);
       }
